@@ -1,1 +1,1 @@
-192.168.226.87
+192.168.226.87 ansible_ssh_user=hunter
