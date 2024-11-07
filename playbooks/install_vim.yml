@@ -11,3 +11,4 @@
   - name: install the vim-nox package
     apt:
       name: vim-nox
+      state: latest
