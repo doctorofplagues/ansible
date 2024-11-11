@@ -1,1 +1,5 @@
+[web_servers]
 192.168.226.87 ansible_ssh_user=hunter
+
+[file_servers]
+192.168.237.198 ansible_ssh_user=sysadmin
