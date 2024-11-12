@@ -2,9 +2,10 @@
 
 - hosts: all
   become: true
-  tasks:
+  pre_tasks:
 
   - name: install updates (Ubuntu)
+    tags: always
     apt:
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
@@ -14,6 +15,7 @@
   tasks:
 
   - name: install the apache2 and php package for Ubuntu
+    tags: apache,apache2,ubuntu
     package:
       name: 
         - apache2
@@ -23,6 +25,7 @@
     when: ansible_distribution == "Ubuntu"
 
   - name: install apache2 and php package for CentOS
+    tags: apache,apache2,ubuntu
     package:
       name:
         - httpd
@@ -36,6 +39,7 @@
   tasks:
 
   - name: install Samba file share (Ubuntu)
+    tags: samba
     package:
       name: samba
       state: latest
