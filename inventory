@@ -1,8 +1,8 @@
 [web_servers]
-192.168.226.87 ansible_ssh_user=hunter
+192.168.226.87
 
 [file_servers]
-192.168.237.198 ansible_ssh_user=sysadmin
+192.168.237.198
 
 [workstations]
-192.168.226.7 ansible_ssh_user=sysadmin
+192.168.226.7

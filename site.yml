@@ -4,12 +4,30 @@
   become: true
   pre_tasks:
 
-  - name: install updates (Ubuntu)
+  - name: update repository cache (Ubuntu)
     tags: always
     apt:
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
 
+  - name: update repository cache (CentOS)
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: add ssh key for ansibletasks
+    tags: always
+    authorized_key:
+      user: ansibletasks
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIODdTmGsl09DzTxLcXvpSFtt/Sm4lhv8FoTCxH554i2o ansible"
+  
 - hosts: workstations
   become: true
   tasks:
@@ -41,6 +59,27 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
+  - name: Allow SSH (port 22)
+    tags: apache,apache2,ubuntu
+    ansible.builtin.ufw:
+      rule: allow
+      port: 22
+      proto: tcp
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Allow HTTP (port 80)
+    ansible.builtin.ufw:
+      rule: allow
+      port: 80
+      proto: tcp
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Enable UFW
+    ansible.builtin.ufw:
+      state: enabled
+      policy: allow
+    when: ansible_distribution == "Ubuntu"
+
   - name: install apache2 and php package for CentOS
     tags: apache,apache2,httpd
     package:
@@ -51,6 +90,14 @@
       update_cache: yes
     when: ansible_distribution == "CentOS"
 
+  - name: start httpd (CentOS)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
+
   - name: copy default html file for site
     tags: apache,apache2,httpd
     copy:
@@ -59,6 +106,22 @@
       owner: root
       group: root
       mode: 0644
+
+  - name: change e-mail address for admin
+    tags: apache,centos,httpd
+    lineinfile: 
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin somebody@somewhere.net
+    when: ansible_distribution == "CentOS"
+    register: httpd
+
+  - name: restart httpd service (CentOS)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed
 
 - hosts: file_servers
   become: true
