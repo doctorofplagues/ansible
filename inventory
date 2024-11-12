@@ -3,3 +3,6 @@
 
 [file_servers]
 192.168.237.198 ansible_ssh_user=sysadmin
+
+[workstations]
+192.168.226.7 ansible_ssh_user=sysadmin
