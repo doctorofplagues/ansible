@@ -11,4 +11,5 @@ Systems Administrator/Cyber Security Engineer
 - The "install_apache.yml" file simply installs Apache on the server.
 - The "install_vim.yml" file simply installs Vim on the Server.
 - The "bootstrap.yml" file is the ansible staging file to add the webadmin and remote_user
-- The "site.yml" is the foundational file for building out and deploying servers
+- The "site_before_roles.yml" file is the foundation file for deploying servers without roles
+- The "site.yml" is the foundational file for building out and deploying servers with roles
