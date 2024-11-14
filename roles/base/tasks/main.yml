@@ -1,0 +1,4 @@
+- name: add ssh key for ansibletasks
+  authorized_key:
+    user: ansibletasks
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIODdTmGsl09DzTxLcXvpSFtt/Sm4lhv8FoTCxH554i2o ansible"
