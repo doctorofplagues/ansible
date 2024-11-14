@@ -61,13 +61,6 @@
   lineinfile:
     path: /etc/httpd/conf/httpd.conf
     regexp: '^ServerAdmin'
-    line: ServerAdmin somebody@somewhere.net
+    line: ServerAdmin hunter@watkins-it.com
   when: ansible_distribution == "CentOS"
-  register: httpd
-
-- name: restart httpd service (CentOS)
-  tags: apache,centos,httpd
-  service:
-    name: httpd
-    state: restarted
-  when: httpd.changed
+  notify: restart_httpd
